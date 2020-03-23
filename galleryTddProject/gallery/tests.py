@@ -56,3 +56,9 @@ class GalleryTestCase(TestCase):
         print(current_data)
         self.assertEqual(current_data[0]['fields']['user'], 3)
         self.assertEqual(current_data[0]['fields']['isPublic'], True)
+
+    def test_login(self):
+        response = self.client.get('/gallery/login/', json.dumps(
+            {"username": "testUser", "password": "AnyPas#5"}), content_type='application/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['user'], "testUser")
