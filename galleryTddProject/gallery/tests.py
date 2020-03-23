@@ -83,3 +83,17 @@ class GalleryTestCase(TestCase):
         self.assertEqual(current_data[0]['fields']['isPublic'], False)
         self.assertEqual(current_data[1]['fields']['name'], 'nuevo2')
         self.assertEqual(current_data[1]['fields']['isPublic'], False)
+
+    def test_portafolio_public(self):
+
+        user_model = User.objects.create_user(username='testUser11', password='kd8wke-DE34', first_name='test',
+                                              last_name='test', email='test@test.com')
+        Image.objects.create(name='nuevo', url='No', description='testImage', type='jpg', user=user_model,
+                             isPublic=True)
+        Image.objects.create(name='nuevo2', url='No', description='testImage', type='jpg', user=user_model,
+                             isPublic=False)
+        response = self.client.post('/gallery/portafolioAddImage/',json.dumps(
+            {"name":"nuevo3", "url":"No", "description":"testImage", "type":"jpg", "user":user_model,"isPublic":"false"}), content_type='application/json')
+        current_data = json.loads(response.content)
+        print(current_data)
+        self.assertEqual(len(current_data), 3)
