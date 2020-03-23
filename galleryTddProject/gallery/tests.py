@@ -36,3 +36,10 @@ class GalleryTestCase(TestCase):
         current_data = json.loads(response.content)
 
         self.assertEqual(current_data[0]['fields']['name'], "nuevo")
+
+    def test_add_user(self):
+        response = self.client.post('/gallery/addUser/', json.dumps(
+            {"username": "testUser", "first_name": "Test", "last_name": "User", "password": "AnyPas#5",
+             "email": "test@test.com"}), content_type='application/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['username'], 'testUser')
