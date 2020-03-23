@@ -1,7 +1,7 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.db.models import F
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.contrib.auth import login as do_login
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from .models import Image
@@ -36,3 +36,18 @@ def portafolioFiltroPublico(request):
     user_name = request.GET.get('username')
     images_list = Image.objects.filter(user__username=user_name,isPublic=True)
     return HttpResponse(serializers.serialize("json",images_list ))
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        jsonUser = json.loads(request.body)
+        username = jsonUser['username']
+        password = jsonUser['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            do_login(request, user)
+            message = username
+        else:
+            message = 'Nombre de usuario o contraseña incorrectos'
+
+    return JsonResponse({"user": message})
