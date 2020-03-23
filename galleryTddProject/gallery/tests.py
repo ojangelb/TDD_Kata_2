@@ -43,3 +43,9 @@ class GalleryTestCase(TestCase):
              "email": "test@test.com"}), content_type='application/json')
         current_data = json.loads(response.content)
         self.assertEqual(current_data[0]['fields']['username'], 'testUser')
+
+    def test_portafolio_public(self):
+        response = self.client.get('/gallery/portafolioPublic/testUser')
+        current_data = json.loads(response.content)
+
+        self.assertEqual(current_data[0]['fields']['isPublic'], "true")
