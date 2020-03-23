@@ -35,4 +35,4 @@ class GalleryTestCase(TestCase):
         response = self.client.get('/gallery/')
         current_data = json.loads(response.content)
 
-        self.assertEqual(current_data[0]['fields']['name'], "nuevo2")
+        self.assertEqual(current_data[0]['fields']['name'], "nuevo")
