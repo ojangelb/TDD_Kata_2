@@ -18,6 +18,7 @@ class GalleryTestCase(TestCase):
                                               last_name='test', email='test@test.com')
         Image.objects.create(name='nuevo', url='No', description='testImage', type='jpg', user=user_model)
         Image.objects.create(name='nuevo2', url='No', description='testImage', type='jpg', user=user_model)
+        Image.objects.create(name='nuevo3', url='No', description='testImage', type='jpg', user=user_model)
 
         response = self.client.get('/gallery/')
         current_data = json.loads(response.content)
