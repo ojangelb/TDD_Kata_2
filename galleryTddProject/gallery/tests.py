@@ -72,3 +72,14 @@ class GalleryTestCase(TestCase):
         current_data = json.loads(response.content)
         self.assertEqual(current_data[0]['fields']['first_name'], 'Test 1')
         self.assertEqual(current_data[0]['fields']['last_name'], 'User 2')
+
+    def test_edit_images(self):
+        self.test_verify_first_from_images_list()
+        response = self.client.post('/gallery/editImages/', json.dumps(
+            {"images": [{"name": "nuevo", "isPublic": False}, {"name": "nuevo2", "isPublic": False}]}),
+                                    content_type='application/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['name'], 'nuevo')
+        self.assertEqual(current_data[0]['fields']['isPublic'], False)
+        self.assertEqual(current_data[1]['fields']['name'], 'nuevo2')
+        self.assertEqual(current_data[1]['fields']['isPublic'], False)
