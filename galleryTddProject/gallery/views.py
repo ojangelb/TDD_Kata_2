@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import F
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -29,3 +30,9 @@ def add_user_view(request):
         user_model.email = email
         user_model.save()
     return HttpResponse(serializers.serialize("json", [user_model]))
+
+@csrf_exempt
+def portafolioFiltroPublico(request):
+    user_name = request.GET.get('username')
+    images_list = Image.objects.filter(user__username=user_name,isPublic=True)
+    return HttpResponse(serializers.serialize("json",images_list ))
