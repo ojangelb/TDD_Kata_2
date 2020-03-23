@@ -9,4 +9,5 @@ urlpatterns = [
     path('addUser/', views.add_user_view, name='addUser'),
     url(r'^portafolioFiltroPublico/$', views.portafolioFiltroPublico, name='portafolioFiltroPublico'),
     path('login/', views.login_view),
+    path('editImages/', views.edit_images_view),
 ]

@@ -26,7 +26,7 @@ def add_user_view(request):
         last_name = json_user['last_name']
         email = json_user['email']
 
-        if len(user_model) ==0:
+        if len(user_model) == 0:
             password = json_user['password']
             username = json_user['username']
             user_model = User.objects.create_user(username=username, password=password)
@@ -40,6 +40,7 @@ def add_user_view(request):
             user_model = User.objects.filter(username=username).first()
 
     return HttpResponse(serializers.serialize("json", [user_model]))
+
 
 @csrf_exempt
 def portafolioFiltroPublico(request):
@@ -64,3 +65,17 @@ def login_view(request):
     return JsonResponse({"user": message})
 
 
+@csrf_exempt
+def edit_images_view(request):
+    if request.method == 'POST':
+        json_user = json.loads(request.body)
+        images = json_user['images']
+        modified = []
+        for img in images:
+            img_model = Image.objects.filter(name=img['name']).first()
+            if img_model is not None:
+                img_model.isPublic = img['isPublic']
+                img_model.save()
+                modified.append(img_model)
+
+    return HttpResponse(serializers.serialize("json", modified))
