@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from django.test import TestCase
 
 # Create your tests here.
 from .models import Image
@@ -38,9 +38,8 @@ class GalleryTestCase(TestCase):
         self.assertEqual(current_data[0]['fields']['name'], "nuevo")
 
     def test_add_user(self):
-        response = self.client.post('/gallery/addUser/', json.dumps(
-            {"username": "testUser", "first_name": "Test", "last_name": "User", "password": "AnyPas#5",
-             "email": "test@test.com"}), content_type='application/json')
+        response = self.client.post('/gallery/addUser/', json.dumps({"username": "testUser", "first_name": "Test", "last_name": "User", "password": "AnyPas#5","email": "test@test.com"}),
+        content_type='application/json')
         current_data = json.loads(response.content)
         self.assertEqual(current_data[0]['fields']['username'], 'testUser')
 
@@ -67,7 +66,7 @@ class GalleryTestCase(TestCase):
 
     def test_edit_user(self):
         self.test_add_user()
-        response = self.client.post('/gallery/editUser/', json.dumps(
+        response = self.client.post('/gallery/addUser/', json.dumps(
             {"username": "testUser", "first_name": "Test 1", "last_name": "User 2", "password": "AnyPas#5",
              "email": "test@test.com"}), content_type='application/json')
         current_data = json.loads(response.content)
