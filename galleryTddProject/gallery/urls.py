@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^portafolioFiltroPublico/$', views.portafolioFiltroPublico, name='portafolioFiltroPublico'),
     path('login/', views.login_view),
     path('editImages/', views.edit_images_view),
+    path('portafolioAddImage/', views.add_image_view),
 ]

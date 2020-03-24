@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login as do_login
+from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
@@ -79,3 +80,21 @@ def edit_images_view(request):
                 modified.append(img_model)
 
     return HttpResponse(serializers.serialize("json", modified))
+
+@csrf_exempt
+def add_image_view(request):
+    if request.method == 'POST':
+        json_user = json.loads(request.body)
+        name = json_user['name']
+        image_model = Image.objects.filter(name=name)
+        username = json_user['user']['username']
+        user_model = User.objects.filter(username=username).first()
+        if len(image_model) == 0 and user_model is not None:
+            image_model = Image()
+            image_model.url = json_user['url']
+            image_model.description = json_user['description']
+            image_model.type = json_user['type']
+            image_model.user = user_model
+            image_model.isPublic = json_user['isPublic']
+            image_model.save()
+    return HttpResponse(serializers.serialize("json", Image.objects.filter(user__username=user_model)))
